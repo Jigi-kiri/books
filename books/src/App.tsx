@@ -1,5 +1,7 @@
 import { lazy } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
+import "./App.css";
+
 import { BookProvider } from "./components/Books/BookContextWrapper/BookContext";
 
 const Login = lazy(() => import("./components/Profile/Login"));
@@ -8,23 +10,50 @@ const Books = lazy(() => import("./components/Books/index"));
 const BooksView = lazy(() => import("./components/Books/View/BookView"));
 const BookForm = lazy(() => import("./components/Books/BookForm"));
 
+function PrivateRoute({ children }: any) {
+  const authorization = localStorage.getItem("token") as string;
+  return authorization ? children : <Navigate to="/" />;
+}
+
 function App() {
-  const isLoggedIn: boolean = localStorage.getItem("token") ? true : false;
-
-  if (!isLoggedIn && window.location.pathname !== "/") {
-    window.location.href = "/";
-  }
-
   return (
     <div>
       <BookProvider>
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/books" element={<Books />} />
-          <Route path="/books/create" element={<BookForm />} />
-          <Route path="/books/view/:id" element={<BooksView />} />
-          <Route path="/books/edit/:id" element={<BookForm edit={true} />} />
+          <Route
+            path="/books"
+            element={
+              <PrivateRoute>
+                <Books />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/books/create"
+            element={
+              <PrivateRoute>
+                <BookForm />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/books/view/:id"
+            element={
+              <PrivateRoute>
+                <BooksView />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/books/edit/:id"
+            element={
+              <PrivateRoute>
+                <BookForm edit={true} />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </BookProvider>
     </div>

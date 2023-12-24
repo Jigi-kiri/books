@@ -21,7 +21,6 @@ const initialData: BookProps = {
 
 interface BookFormProps {
   edit?: boolean;
-  data?: BookProps;
 }
 
 const BookForm: React.FC<BookFormProps> = ({ edit = false }) => {
@@ -45,17 +44,17 @@ const BookForm: React.FC<BookFormProps> = ({ edit = false }) => {
   const validationSchema = yup.object().shape({
     title: yup
       .string()
-      .max(20, "Max limit exceed")
+      .max(20, "Max limit is 20 characters")
       .required("Title Required")
       .trim(),
     author: yup
       .string()
-      .max(20, "Max limit exceed")
+      .max(20, "Max limit is 20 characters")
       .required("Author Required")
       .trim(),
     gener: yup
       .string()
-      .max(100, "Max limit exceed")
+      .max(100, "Max limit is 100 characters")
       .required("Gener Required")
       .trim(),
   });
