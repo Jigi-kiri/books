@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  Divider,
   Grid,
   Paper,
   Typography,
@@ -42,6 +43,7 @@ const BookView: React.FC<any> = () => {
               <Paper elevation={3} sx={{ padding: 3, margin: 3 }}>
                 <Typography variant="h4" gutterBottom>
                   {book?.title}
+                  <Divider />
                 </Typography>
                 <Typography
                   variant="subtitle1"

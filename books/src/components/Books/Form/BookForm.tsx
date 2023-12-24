@@ -1,4 +1,11 @@
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { red } from "@mui/material/colors";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -7,9 +14,9 @@ import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
-import { BookProps } from "../../@types";
-import { useBookContext } from "./BookContextWrapper/BookContext";
-import "./Style/books.css";
+import { BookProps } from "../../../@types";
+import { useBookContext } from "../BookContextWrapper/BookContext";
+import "../Style/books.css";
 
 const initialData: BookProps = {
   id: 0,
@@ -21,13 +28,14 @@ const initialData: BookProps = {
 
 interface BookFormProps {
   edit?: boolean;
+  data?: BookProps;
 }
 
 const BookForm: React.FC<BookFormProps> = ({ edit = false }) => {
   const navigate = useNavigate();
   const [book, setBook] = useState<BookProps>();
   const [loading, setLoading] = useState<boolean>(false);
-  const { books } = useBookContext();
+  const { books, addBook, updateBook } = useBookContext();
   const param: any = useParams();
 
   useEffect(() => {
@@ -40,7 +48,7 @@ const BookForm: React.FC<BookFormProps> = ({ edit = false }) => {
       setLoading(false);
     }
   }, [param]);
-  console.log(book);
+
   const validationSchema = yup.object().shape({
     title: yup
       .string()
@@ -54,13 +62,25 @@ const BookForm: React.FC<BookFormProps> = ({ edit = false }) => {
       .trim(),
     gener: yup
       .string()
-      .max(100, "Max limit is 100 characters")
+      .max(100, "Max limit 100 characters")
       .required("Gener Required")
       .trim(),
   });
 
   const onHandleSubmit = (data: BookProps) => {
-    console.log("HandleSbmit called", data);
+    if (Object.keys(data).length > 0) {
+      const bookIndex = books.findIndex(
+        (el: BookProps) => el.title.toLowerCase() === data.title.toLowerCase()
+      );
+      if (bookIndex !== -1 && !edit)
+        return alert("Book with this title already exist");
+      if (edit) {
+        updateBook(data);
+      } else {
+        addBook(data);
+      }
+      navigate("/books");
+    }
   };
 
   const formik = useFormik({
@@ -72,17 +92,14 @@ const BookForm: React.FC<BookFormProps> = ({ edit = false }) => {
     validateOnChange: true,
   });
 
-  const {
-    values,
-    errors,
-    handleSubmit,
-    handleChange,
-    handleBlur,
-    touched,
-    setFieldValue,
-  } = formik;
+  const { values, errors, handleSubmit, handleChange, handleBlur, touched } =
+    formik;
 
-  return (
+  return loading ? (
+    <Box display="flex" justifyContent="center" m={20}>
+      <CircularProgress size={50} />
+    </Box>
+  ) : (
     <Box
       className="bookform-container"
       component="form"

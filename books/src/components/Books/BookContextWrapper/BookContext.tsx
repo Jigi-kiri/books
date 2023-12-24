@@ -4,6 +4,7 @@ import { BookProps } from "../../../@types";
 // Action Types
 type Action =
   | { type: "ADD_BOOK"; payload: BookProps }
+  | { type: "UPDATE_BOOK"; payload: BookProps }
   | { type: "REMOVE_BOOK"; payload: number };
 
 const bookReducer = (state: BookProps[], action: Action): BookProps[] => {
@@ -14,6 +15,12 @@ const bookReducer = (state: BookProps[], action: Action): BookProps[] => {
       const updatedState = [...state, action.payload];
       localStorage.setItem("books", JSON.stringify(updatedState));
       return updatedState;
+    case "UPDATE_BOOK":
+      const updatedStateUpdate = state.map((book) =>
+        book.id === action.payload.id ? { ...book, ...action.payload } : book
+      );
+      localStorage.setItem("books", JSON.stringify(updatedStateUpdate));
+      return updatedStateUpdate;
     case "REMOVE_BOOK":
       const bookStateData = state.filter((book) => book.id !== action.payload);
       localStorage.setItem("books", JSON.stringify(bookStateData));
@@ -27,6 +34,7 @@ const BookContext = createContext<
   | {
       books: BookProps[];
       addBook: (book: BookProps) => void;
+      updateBook: (book: BookProps) => void;
       removeBook: (id: number) => void;
     }
   | undefined
@@ -36,11 +44,14 @@ const BookProvider: React.FC<any> = ({ children }) => {
   const initialData: BookProps[] = JSON.parse(
     localStorage.getItem("books") as any
   );
-
   const [books, dispatch] = useReducer(bookReducer, initialData);
 
   const addBook = (book: BookProps) => {
     dispatch({ type: "ADD_BOOK", payload: book });
+  };
+
+  const updateBook = (book: BookProps) => {
+    dispatch({ type: "UPDATE_BOOK", payload: book });
   };
 
   const removeBook = (bookId: number) => {
@@ -48,7 +59,7 @@ const BookProvider: React.FC<any> = ({ children }) => {
   };
 
   return (
-    <BookContext.Provider value={{ books, addBook, removeBook }}>
+    <BookContext.Provider value={{ books, addBook, updateBook, removeBook }}>
       {children}
     </BookContext.Provider>
   );

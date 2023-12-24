@@ -1,4 +1,10 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
 import React from "react";
 
 interface ConfirmationDialogProps {
@@ -18,7 +24,9 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
     <React.Fragment>
       <Dialog open={open} onClose={onClose} maxWidth="md">
         <DialogTitle>Delete {dialogTitle}</DialogTitle>
-        <DialogContent>Are you sure you want to delete {dialogTitle}</DialogContent>
+        <DialogContent>
+          Are you sure you want to delete {dialogTitle}
+        </DialogContent>
         <DialogActions>
           <Button variant="outlined" color="primary" onClick={onClose}>
             No

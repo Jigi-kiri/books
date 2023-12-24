@@ -8,7 +8,7 @@ const Login = lazy(() => import("./components/Profile/Login"));
 const Register = lazy(() => import("./components/Profile/Register"));
 const Books = lazy(() => import("./components/Books/index"));
 const BooksView = lazy(() => import("./components/Books/View/BookView"));
-const BookForm = lazy(() => import("./components/Books/BookForm"));
+const BookForm = lazy(() => import("./components/Books/Form/BookForm"));
 
 function PrivateRoute({ children }: any) {
   const authorization = localStorage.getItem("token") as string;

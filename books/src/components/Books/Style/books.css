@@ -1,9 +1,9 @@
 .books-container {
-  margin: 10rem 2rem;
+  margin: 4rem 2rem;
 }
 
 .bookform-container {
-  margin: 10rem 8rem;
+  margin: 5rem 8rem;
   box-shadow: -2rem 1rem 8rem rgb(166, 182, 227);
   border-radius: 5rem;
   cursor: default;
@@ -18,11 +18,36 @@
 }
 
 .bookview-container {
-  margin: 10rem 2rem;
+  margin: 8rem 5rem;
   background-image: url("../../../assets/books.png");
   border-radius: 2rem;
 }
 
 .date-field {
   width: 100% !important;
+}
+
+.field-heading {
+  font-weight: "bold" !important;
+  text-transform: "capitalize" !important;
+  font-size: 14;
+}
+
+.field-value {
+  word-break: "break-all" !important;
+  text-transform: "capitalize";
+  font-size: 14;
+}
+
+.logout-button {
+  position: absolute;
+  top: 10%;
+}
+
+.custom-header {
+  display: flex;
+  background-color: lightblue;
+  padding: 1rem !important;
+  font-weight: 700 !important;
+  font-size: 15 !important;
 }

@@ -4,7 +4,9 @@ import { red } from "@mui/material/colors";
 import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
 import React, { lazy, useState } from "react";
 import { BookProps } from "../../../@types";
+import { InitialData } from "../../../initialBookData";
 import { useBookContext } from "../BookContextWrapper/BookContext";
+import "../Style/books.css";
 const ConfirmationDialog = lazy(() => import("./ConfirmationDialog"));
 
 const BookListing = () => {
@@ -24,20 +26,39 @@ const BookListing = () => {
       field: "title",
       headerName: "Title",
       flex: 1,
+      filterable: true,
+      sortable: true,
+      headerClassName: "custom-header",
     },
     {
       field: "author",
       headerName: "Author",
+      filterable: true,
+      sortable: true,
+      headerClassName: "custom-header",
       flex: 1,
     },
     {
       field: "publicationYear",
       headerName: "Publication Year",
+      filterable: true,
+      sortable: true,
+      headerClassName: "custom-header",
       flex: 1,
+      renderCell: (params: GridCellParams) => {
+        return (
+          <div style={{ marginLeft: 30 }}>
+            {new Date(params.value as string).getFullYear()}
+          </div>
+        );
+      },
     },
     {
       field: "gener",
       headerName: "Gener",
+      filterable: true,
+      sortable: true,
+      headerClassName: "custom-header",
       flex: 1,
     },
     {
@@ -45,6 +66,7 @@ const BookListing = () => {
       headerName: "Action",
       sortable: false,
       filterable: false,
+      headerClassName: "custom-header",
       renderCell: (params: GridCellParams) => {
         return (
           <div>
@@ -91,7 +113,7 @@ const BookListing = () => {
         dialogTitle={selectedBook?.title as string}
       />
       <DataGrid
-        rows={books}
+        rows={books ?? InitialData}
         columns={columns}
         columnBuffer={2}
         initialState={{
