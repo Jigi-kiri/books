@@ -1,91 +1,23 @@
 import React, { createContext, useContext, useReducer } from "react";
 import { BookProps } from "../../../@types";
 
-const InitialData: BookProps[] = [
-  {
-    id: 1,
-    title: "Atomic Habits",
-    author: "James Clear",
-    publicationYear: "2018",
-    gener: "Human behaviour",
-  },
-  {
-    id: 2,
-    title: "IRON FLAME",
-    author: "Rebecca Yarros",
-    publicationYear: "2023",
-    gener: "Novel",
-  },
-  {
-    id: 3,
-    title: "Atomic Habits",
-    author: "James Clear",
-    publicationYear: "2018",
-    gener: "Human behaviour",
-  },
-  {
-    id: 4,
-    title: "IRON FLAME",
-    author: "Rebecca Yarros",
-    publicationYear: "2023",
-    gener: "Novel",
-  },
-  {
-    id: 5,
-    title: "Atomic Habits",
-    author: "James Clear",
-    publicationYear: "2018",
-    gener: "Human behaviour",
-  },
-  {
-    id: 6,
-    title: "IRON FLAME",
-    author: "Rebecca Yarros",
-    publicationYear: "2023",
-    gener: "Novel",
-  },
-  {
-    id: 7,
-    title: "Atomic Habits",
-    author: "James Clear",
-    publicationYear: "2018",
-    gener: "Human behaviour",
-  },
-  {
-    id: 8,
-    title: "IRON FLAME",
-    author: "Rebecca Yarros",
-    publicationYear: "2023",
-    gener: "Novel",
-  },
-  {
-    id: 9,
-    title: "Atomic Habits",
-    author: "James Clear",
-    publicationYear: "2018",
-    gener: "Human behaviour",
-  },
-  {
-    id: 10,
-    title: "IRON FLAME",
-    author: "Rebecca Yarros",
-    publicationYear: "2023",
-    gener: "Novel",
-  },
-];
-
 // Action Types
 type Action =
   | { type: "ADD_BOOK"; payload: BookProps }
   | { type: "REMOVE_BOOK"; payload: number };
 
-// Reducer Function
 const bookReducer = (state: BookProps[], action: Action): BookProps[] => {
   switch (action.type) {
     case "ADD_BOOK":
-      return [...state, action.payload];
+      const lastIndex = state[state.length - 1].id;
+      action.payload.id = lastIndex + 1;
+      const updatedState = [...state, action.payload];
+      localStorage.setItem("books", JSON.stringify(updatedState));
+      return updatedState;
     case "REMOVE_BOOK":
-      return state.filter((book) => book.id !== action.payload);
+      const bookStateData = state.filter((book) => book.id !== action.payload);
+      localStorage.setItem("books", JSON.stringify(bookStateData));
+      return bookStateData;
     default:
       return state;
   }
@@ -101,7 +33,11 @@ const BookContext = createContext<
 >(undefined);
 
 const BookProvider: React.FC<any> = ({ children }) => {
-  const [books, dispatch] = useReducer(bookReducer, InitialData);
+  const initialData: BookProps[] = JSON.parse(
+    localStorage.getItem("books") as any
+  );
+
+  const [books, dispatch] = useReducer(bookReducer, initialData);
 
   const addBook = (book: BookProps) => {
     dispatch({ type: "ADD_BOOK", payload: book });

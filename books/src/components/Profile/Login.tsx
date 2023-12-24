@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { LoginCredProps } from "../../@types";
 import { auth } from "../../config";
 import LoginForm from "./LoginForm";
+import { InitialData } from "../../initialBookData";
 
 const Login = (): React.ReactElement => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const Login = (): React.ReactElement => {
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then((res: any) => {
         localStorage.setItem("token", res._tokenResponse.idToken);
+        localStorage.setItem("books", JSON.stringify(InitialData));
         navigate("/books");
       })
       .catch((err: any) => {

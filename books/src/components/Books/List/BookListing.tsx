@@ -11,7 +11,13 @@ const BookListing = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [selectedBook, setSelectedBook] = useState<BookProps>();
 
-  const { books } = useBookContext();
+  const { books, removeBook } = useBookContext();
+
+  const handleDelete = () => {
+    if (!selectedBook?.id) return;
+    removeBook(selectedBook?.id);
+    setOpen(false);
+  };
 
   const columns: GridColDef[] = [
     {
@@ -81,7 +87,7 @@ const BookListing = () => {
       <ConfirmationDialog
         open={open}
         onClose={() => setOpen(!open)}
-        onOk={() => console.log("OK clicked")}
+        onOk={() => handleDelete()}
         dialogTitle={selectedBook?.title as string}
       />
       <DataGrid
