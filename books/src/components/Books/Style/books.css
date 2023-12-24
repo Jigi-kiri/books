@@ -1,0 +1,28 @@
+.books-container {
+  margin: 10rem 2rem;
+}
+
+.bookform-container {
+  margin: 10rem 8rem;
+  box-shadow: -2rem 1rem 8rem rgb(166, 182, 227);
+  border-radius: 5rem;
+  cursor: default;
+  padding: 2rem;
+}
+.datepicker-field {
+  margin-top: 16px;
+  margin-bottom: 8px;
+  position: relative;
+  flex-direction: column;
+  vertical-align: top;
+}
+
+.bookview-container {
+  margin: 10rem 2rem;
+  background-image: url("../../../assets/books.png");
+  border-radius: 2rem;
+}
+
+.date-field {
+  width: 100% !important;
+}
