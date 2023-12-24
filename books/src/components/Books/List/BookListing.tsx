@@ -112,21 +112,23 @@ const BookListing = () => {
         onOk={() => handleDelete()}
         dialogTitle={selectedBook?.title as string}
       />
-      <DataGrid
-        rows={books ?? InitialData}
-        columns={columns}
-        columnBuffer={2}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
-          },
-        }}
-        getRowId={(row: BookProps) => row.id}
-        rowSelection={false}
-        disableColumnSelector={false}
-        disableDensitySelector={false}
-        pageSizeOptions={[5, 10]}
-      />
+      <div style={{ height: "59vh" }}>
+        <DataGrid
+          rows={books ?? InitialData}
+          columns={columns}
+          columnBuffer={2}
+          initialState={{
+            pagination: {
+              paginationModel: { page: 0, pageSize: 5 },
+            },
+          }}
+          getRowId={(row: BookProps) => row.id}
+          rowSelection={false}
+          disableColumnSelector={false}
+          disableDensitySelector={false}
+          pageSizeOptions={[5, 10]}
+        />
+      </div>
     </React.Fragment>
   );
 };
